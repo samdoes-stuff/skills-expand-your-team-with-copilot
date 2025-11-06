@@ -790,3 +790,64 @@ footer {
   text-align: center;
   font-weight: 500;
 }
+
+/* Difficulty Filter Styles */
+.difficulty-filter-container {
+  margin-top: 1rem;
+}
+
+.difficulty-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.difficulty-filter {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  text-align: left;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.difficulty-filter:hover {
+  background-color: #f5f5f5;
+  border-color: var(--primary);
+}
+
+.difficulty-filter.active {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  font-weight: 600;
+}
+
+/* Difficulty Badge Styles */
+.difficulty-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.difficulty-badge.difficulty-beginner {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.difficulty-badge.difficulty-intermediate {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.difficulty-badge.difficulty-advanced {
+  background-color: #f8d7da;
+  color: #721c24;
+}
