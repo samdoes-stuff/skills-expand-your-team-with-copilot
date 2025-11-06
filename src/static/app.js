@@ -526,6 +526,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to handle copy to clipboard
   function handleCopyLink(button, url) {
+    // Check if Clipboard API is available
+    if (!navigator.clipboard) {
+      showMessage("Copy to clipboard not supported in this browser", "error");
+      return;
+    }
+    
     navigator.clipboard.writeText(url).then(() => {
       // Visual feedback
       button.classList.add("copied");
