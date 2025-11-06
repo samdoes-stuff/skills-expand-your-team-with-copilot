@@ -473,6 +473,78 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Function to create share buttons
+  function createShareButtons(activityName, activityDescription) {
+    const currentUrl = window.location.origin;
+    const shareUrl = `${currentUrl}/static/index.html`;
+    const shareText = `Check out ${activityName} at Mergington High School! ${activityDescription}`;
+    const encodedUrl = encodeURIComponent(shareUrl);
+    const encodedText = encodeURIComponent(shareText);
+
+    return `
+      <div class="share-buttons-label">Share this activity:</div>
+      <div class="share-buttons">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="share-button facebook" 
+           title="Share on Facebook"
+           aria-label="Share on Facebook">
+          📘
+        </a>
+        <a href="https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="share-button twitter" 
+           title="Share on Twitter"
+           aria-label="Share on Twitter">
+          🐦
+        </a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="share-button linkedin" 
+           title="Share on LinkedIn"
+           aria-label="Share on LinkedIn">
+          💼
+        </a>
+        <a href="mailto:?subject=${encodeURIComponent(activityName)}&body=${encodedText}" 
+           class="share-button email" 
+           title="Share via Email"
+           aria-label="Share via Email">
+          ✉️
+        </a>
+        <button class="share-button copy-link" 
+                data-url="${shareUrl}" 
+                title="Copy link to clipboard"
+                aria-label="Copy link to clipboard">
+          🔗
+        </button>
+      </div>
+    `;
+  }
+
+  // Function to handle copy to clipboard
+  function handleCopyLink(button, url) {
+    navigator.clipboard.writeText(url).then(() => {
+      // Visual feedback
+      button.classList.add("copied");
+      button.textContent = "✓";
+      
+      // Show success message
+      showMessage("Link copied to clipboard!", "success");
+      
+      // Reset button after 2 seconds
+      setTimeout(() => {
+        button.classList.remove("copied");
+        button.textContent = "🔗";
+      }, 2000);
+    }).catch(err => {
+      console.error("Failed to copy:", err);
+      showMessage("Failed to copy link", "error");
+    });
+  }
+
   // Function to render a single activity card
   function renderActivityCard(name, details) {
     const activityCard = document.createElement("div");
@@ -553,6 +625,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .join("")}
         </ul>
       </div>
+      ${createShareButtons(name, details.description)}
       <div class="activity-card-actions">
         ${
           currentUser
@@ -586,6 +659,15 @@ document.addEventListener("DOMContentLoaded", () => {
           openRegistrationModal(name);
         });
       }
+    }
+
+    // Add click handler for copy link button
+    const copyLinkButton = activityCard.querySelector(".copy-link");
+    if (copyLinkButton) {
+      copyLinkButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        handleCopyLink(copyLinkButton, copyLinkButton.dataset.url);
+      });
     }
 
     activitiesList.appendChild(activityCard);
